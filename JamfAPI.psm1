@@ -8,12 +8,6 @@ STATUS 404 The object/resource you were requesting could not be found. Check th
 STATUS 409 There was a conflict when your request was processed. Normally this is due to your data not including all of the required fields, having invalid fields or values, or there is a conflict between your object and another (e.g. some resources require a unique <name>). Check your data and reattempt.
 STATUS 500 This is a generic internal server error. A 500 status code usually indicates something has gone wrong on the server end and is unrelated to your request.
 #>
-<# Snippets:
-     $Body = "<mobile_device><general><display_name>EWTDEVTEST</display_name><device_name>EWTDEVTEST</device_name><name>EWTDEVTEST</name></general></mobile_device>"
-     $ProdUri = "https://nychh.jamfcloud.com/JSSResource/$query"
-
-
-#>
 
 function Get-JamfMobileDevice {
     [Cmdletbinding()]
@@ -89,6 +83,49 @@ function Get-JamfComputer {
 }
 
 # Get-JamfComputer
+
+function Get-JamfDeviceCommand {
+    #Incomplete Function
+    [Cmdletbinding()]
+    param(
+        [Parameter(ValueFromPipeline=$true,
+        ValueFromPipelineByPropertyName=$true)][String[]]$Id,
+        [ValidateSet("Settings", "EraseDevice", "ClearPasscode", "UnmanageDevice", "UpdateInventory", "ClearRestrictionsPassword", "SettingsEnableDataRoaming", "SettingsDisableDataRoaming", "SettingsEnableVoiceRoaming", "SettingsDisableVoiceRoaming", "SettingsEnableAppAnalytics", "SettingsDisableAppAnalytics", "SettingsEnableDiagnosticSubmission", "SettingsDisableDiagnosticSubmission", "BlankPush", "ShutDownDevice", "RestartDevice", "PasscodeLockGracePeriod")]
+        [string]$Command,
+        [System.Management.Automation.CredentialAttribute()]$Credential,
+        [Parameter(Mandatory=$true)]$JssAPIurl,
+        )
+
+    if ($Credential -eq $null) {
+        
+        $Credential = Get-Credential
+
+    }
+
+    if ($id -eq $null) {
+
+        $query = "mobiledevicecommands"
+        $Uri = "$JssAPIurl/JSSResource/$query"
+        $R = Invoke-RestMethod -Uri $Uri -Method Get -Credential $Credential
+
+    }
+    else {
+
+        $query = "mobiledevicecommands/command/id/$Id"
+        $Uri = "$JssAPIurl/JSSResource/$query"
+        $R = Invoke-RestMethod -Uri $Uri -Method Get -Credential $Credential
+        
+    }
+    if ($Command -eq $true) {
+
+        $CmdUri = "$JssAPIurl/JSSResource/mobiledevicecommands/command/$Command"
+        $Rcmd = Invoke-RestMethod -Uri $CmdUri -Method Get -Credential $Credential
+        return $Rcmd.mobile_device_commands.mobile_device_command
+
+    }
+
+}
+
 
 function Send-JamfDeviceCommand {
     [Cmdletbinding()]
