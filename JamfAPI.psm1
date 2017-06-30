@@ -8,12 +8,6 @@ STATUS 404 The object/resource you were requesting could not be found. Check th
 STATUS 409 There was a conflict when your request was processed. Normally this is due to your data not including all of the required fields, having invalid fields or values, or there is a conflict between your object and another (e.g. some resources require a unique <name>). Check your data and reattempt.
 STATUS 500 This is a generic internal server error. A 500 status code usually indicates something has gone wrong on the server end and is unrelated to your request.
 #>
-<# Snippets:
-     $Body = "<mobile_device><general><display_name>EWTDEVTEST</display_name><device_name>EWTDEVTEST</device_name><name>EWTDEVTEST</name></general></mobile_device>"
-     $ProdUri = "https://nychh.jamfcloud.com/JSSResource/$query"
-
-
-#>
 
 function Get-JamfMobileDevice {
     [Cmdletbinding()]
