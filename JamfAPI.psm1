@@ -214,17 +214,17 @@ function Get-JamfComputer {
         [System.Management.Automation.CredentialAttribute()]
         $Credential,
         [AllowNull()][String[]]$Id,
-        # Find Mobile device by name
+        # Find computer by name
         [AllowNull()][String]$Name,
-        # Find Mobile Device by Serial Number
+        # Find computer by Serial Number
         [AllowNull()][string]$SerialNumber,
-        # Find Mobile Device by Wifi Mac Address
+        # Find computer by Wifi Mac Address
         [AllowNull()][string]$MacAddress,
-        # Find Mobile Device by udid
+        # Find computer by udid
         [AllowNull()][string]$udid,
-        # Find mobile device that matches criteria. Is able to take Wildcards (*).
+        # Find computer that matches criteria. Is able to take Wildcards (*).
         [AllowNull()][string]$Match,
-        # Specifies a path to one or more locations.
+        # Specifies a path to one location.
         [Parameter(Mandatory=$false,
                    ParameterSetName="ParameterSetName",
                    HelpMessage="Path to save location.")]
