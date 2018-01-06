@@ -61,8 +61,3 @@ function Set-JamfMobileExtensionAttribute {
     
 }
 
-$JssAPIurl = "https://nychhdev.jamfcloud.com"
-$ExtensionAttribute = "ManageUpdates"
-
-Set-JamfMobileExtensionAttribute -JssAPIurl $JssAPIurl -Credential $Credential -DeviceName "EWTDEV02","EWTDEV03","iPod Touch" -ExtensionAttribute $ExtensionAttribute -Value 2 -Force
-
