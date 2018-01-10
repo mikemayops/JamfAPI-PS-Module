@@ -12,30 +12,37 @@ STATUS 500 This is a generic internal server error. A 500 status code usually i
 function Get-JamfMobileDevice {
     [Cmdletbinding()]
     param(
+
         [Parameter(Mandatory=$true)]$JssAPIurl,
-        [Parameter(Mandatory=$true)]
-        [System.Management.Automation.CredentialAttribute()]
+
+        [ValidateNotNull()]
+        [System.Management.Automation.Credential()]
+        [PScredential]
         $Credential,
+
         [AllowNull()][String[]]$Id,
+
         # Find Mobile device by name
         [AllowNull()][String]$Name,
+
         # Find Mobile Device by Serial Number
         [AllowNull()][string]$SerialNumber,
+
         # Find Mobile Device by Wifi Mac Address
         [AllowNull()][string]$MacAddress,
+
         # Find Mobile Device by udid
         [AllowNull()][string]$udid,
+
         # Find mobile device that matches criteria. Is able to take Wildcards (*).
         [AllowNull()][string]$Match,
+
         # Specifies a path to one or more locations.
         [Parameter(Mandatory=$false,
                    ParameterSetName="ParameterSetName",
                    HelpMessage="Path to save location.")]
         [AllowNull()][string]$OutFilePath
         )
-    if ($Credential -eq $null) {
-        $Credential = Get-Credential
-    }
 
     if (($id -eq $null) -and ($Name -eq "") -and ($SerialNumber -eq "") -and ($MacAddress -eq "") -and ($udid -eq "") -and ($Match -eq "")) {
         
@@ -266,7 +273,7 @@ function Get-JamfComputer {
             else {
                 
                 $R = Invoke-RestMethod -Uri $Uri -Method Get -Credential $Credential
-                $Computer = $R.computers
+                $Computer = $R.computer
                 $DeviceName = $Computer.general | select -ExpandProperty name
                 $DeviceId = $Computer.general | select -ExpandProperty id
                 Add-Member -InputObject $Computer -MemberType NoteProperty -Name "computer_name" -Value $DeviceName
@@ -413,7 +420,7 @@ function Get-JamfDeviceCommand {
         [ValidateSet("Settings", "EraseDevice", "ClearPasscode", "UnmanageDevice", "UpdateInventory", "ClearRestrictionsPassword", "SettingsEnableDataRoaming", "SettingsDisableDataRoaming", "SettingsEnableVoiceRoaming", "SettingsDisableVoiceRoaming", "SettingsEnableAppAnalytics", "SettingsDisableAppAnalytics", "SettingsEnableDiagnosticSubmission", "SettingsDisableDiagnosticSubmission", "BlankPush", "ShutDownDevice", "RestartDevice", "PasscodeLockGracePeriod")]
         [string]$Command,
         [System.Management.Automation.CredentialAttribute()]$Credential,
-        [Parameter(Mandatory=$true)]$JssAPIurl,
+        [Parameter(Mandatory=$true)]$JssAPIurl
         )
 
     if ($Credential -eq $null) {
